@@ -1,48 +1,50 @@
-package stacks;
+package stacks_queues;
 
-import java.util.*;
 import java.io.*;
 
-public class StackWithArray {
-
-class Stack{
+public class QueueWithArray {
+class Queue {
     int[] arr;
-    int top;
-    Stack(){
-        arr = new int[(int)1e6];
-        top = -1;
+    int front;
+    int rear;
+
+    Queue(){
+        arr = new int[(int) 1e6 + 1];
+        front = -1;
+        rear = -1;
     }
 
-    void add(int num){
-        if(top + 1  < arr.length){
-             top++;
-            arr[top] = num;
+    void add(int val){
+        if(rear + 1 < arr.length){
+            ++rear;
+            arr[rear] = val;
+            if(front == -1) front = 0;
         }
     }
 
     void remove(){
-        if(top != -1){
-            top -= 1;
+        if(front == -1 || front > rear){
+            return;
         }
+        ++front;
     }
 
     void print(){
-        if(top != -1){
-            System.out.println(arr[top]);
-        }else{
+        if(front == -1 || front > rear){
             System.out.println(0);
+        } else {
+            System.out.println(arr[front]);
         }
     }
-
-
 }
+
 class Main{
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args)throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         int testCases = Integer.parseInt(reader.readLine());
         while(testCases > 0){
-            Stack st = new Stack();
+            Queue q = new Queue();
             int queries = Integer.parseInt(reader.readLine());
             while(queries > 0){
                 String[] tokens = reader.readLine().split(" ");
@@ -53,14 +55,13 @@ class Main{
                 }
 
                 switch(ops){
-                    case "add": st.add(value);
+                    case "add": q.add(value);
                                 break;
-                    case "remove": st.remove();
+                    case "print": q.print();
                                 break;
-                    case "print": st.print();
+                    case "remove": q.remove();
                                 break;
-                    default: System.out.println("Not a valid operation");
-                                break;
+                    default: System.out.println("Invalid operation");
                 }
                 queries -= 1;
             }
